@@ -1,3 +1,11 @@
+% Solving the 1D Poisson equation numerically.
+% 
+% The equation takes the form of
+% d^2u / dx^2 = -f
+%
+% Pseudo time-stepping might be applied when written as
+% du/dt = d^2u / dx^2 + f
+
 clear all;
 close all;
 clc;
@@ -21,7 +29,7 @@ x = linspace(x0, x1, N);
 N_analyt = 1001;
 x_analyt = linspace(x0,x1,N_analyt);
 dx_analyt = (x1-x0)/(N_analyt-1);
-C2 = f/2;
+C2 = -f/2;
 C1 = (u0-u1 - C2*(x0^2-x1^2) )/(x0-x1);
 C0 = u0 - C2*x0^2 - C1*x0;
 
@@ -48,7 +56,7 @@ if right_Neumann_BC==1
 end
 
 b(1) = u0;
-b(2:end-1) = f;
+b(2:end-1) = -f;
 b(end) = u1;
 
 u_num_dir = A\b;
@@ -74,7 +82,7 @@ residual = [0,0];
 
 while change > tolerance && cter<max_iter
     u_new(2:end-1) = u_old(2:end-1) + ...
-        dt/dx^2*( u_old(1:end-2) - 2*u_old(2:end-1) + u_old(3:end) ) - ...
+        dt/dx^2*( u_old(1:end-2) - 2*u_old(2:end-1) + u_old(3:end) ) + ...
         f*dt;
 
     change = max(abs(u_new-u_old));

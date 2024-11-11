@@ -33,8 +33,8 @@ for i = 1:Nt
     u_new(end) = cos(x1)*sin(t);
 
     u_new(2:end-1) = u_old(2:end-1) + ...
-        dt/dx^2*( u_old(1:end-2) - 2*u_old(2:end-1) + u_old(3:end) ) - ...
-        f*dt + dt*( cos(x(2:end-1))*cos(t) + cos(x(2:end-1))*sin(t) + f);
+        dt/dx^2*( u_old(1:end-2) - 2*u_old(2:end-1) + u_old(3:end) ) + ...
+        f*dt + dt*( cos(x(2:end-1))*cos(t) + cos(x(2:end-1))*sin(t) - f);
 
     u_old = u_new;
     u_analyt = cos(x)*sin(t);
@@ -42,6 +42,7 @@ for i = 1:Nt
     t = t + dt;
 
     if mod(cter,10)==0
+        close all;
         figure('Visible', 'off');
         plot(x,u_new,'-k','LineWidth',2,'MarkerFaceColor','k');
         hold on
